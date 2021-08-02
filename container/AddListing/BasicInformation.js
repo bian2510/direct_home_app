@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { useStateMachine } from 'little-state-machine';
 import { useForm, Controller } from 'react-hook-form';
-import { Row, Col, Input, InputNumber, Button } from 'antd';
+import { Row, Col, Input, InputNumber, Button, Select, Checkbox } from 'antd';
+import { cabaLocations } from 'static/data/caba-locations'
 import InputIncDec from 'components/UI/InputIncDec/InputIncDec';
 import FormControl from 'components/UI/FormControl/FormControl';
 import AddListingAction from './AddListingAction';
 import { FormHeader, Title, FormContent, FormAction } from './AddListing.style';
 
 const BasicInformation = ({ setStep }) => {
+  const { Option } = Select;
   const { action, state } = useStateMachine(AddListingAction);
   const { control, register, errors, setValue, handleSubmit } = useForm();
   const [quantity, setQuantity] = useState({
     guest: 0,
     bed: 0,
   });
+  const operations = ['Alquiler', 'Alquiler temporal', 'Vender']
   useEffect(() => {
     register({ name: 'guest' }, { required: true });
     register({ name: 'bed' }, { required: true });
   }, [register]);
-
+  
+  const onChange = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+  }
   const handleOnChange = (key) => (event) => {
     setQuantity({
       ...quantity,
@@ -55,32 +61,109 @@ const BasicInformation = ({ setStep }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormContent>
         <FormHeader>
-          <Title>Step 1: Start with the basics</Title>
+          <Title>Agregar Propiedad</Title>
         </FormHeader>
+        <h2>Direccion</h2>
         <Row gutter={30}>
           <Col sm={12}>
-            <FormControl
-              label="Hotel Name"
-              htmlFor="hotelName"
-              error={errors.hotelName && <span>This field is required!</span>}
+
+          <FormControl
+              label="Pais"
+              htmlFor="country"
+              error={errors.country && <span>This field is required!</span>}
+            >
+            <Select defaultValue="Argentina" style={{ width: 250 }} disabled>
+            </Select>
+          </FormControl>
+          <FormControl
+            label="Provincia"
+            htmlFor="province"
+            error={errors.province && <span>This field is required!</span>}
+            >
+            <Select defaultValue="CABA" style={{ width: 250 }} disabled>
+            </Select>
+          </FormControl>
+          <FormControl
+            label="Localidad"
+            htmlFor="locality"
+            error={errors.locality && <span>This field is required!</span>}
+            >
+            <Select defaultValue="Seleccione" style={{ width: 250 }}>
+            { cabaLocations.map(location => {
+              return <Option value={location}>{location}</Option>
+            })}
+            </Select>
+          </FormControl>
+          <FormControl
+            label="Operacion"
+            htmlFor="operation"
+            error={errors.operation && <span>This field is required!</span>}
+            >
+            <Select defaultValue="Seleccione" style={{ width: 250 }}>
+            { operations.map(operation => {
+              return <Option value={operation}>{operation}</Option>
+            })}
+            </Select>
+          </FormControl>
+          </Col>
+          <Col sm={12}>
+          <FormControl
+              label="Calle"
+              htmlFor="stret"
+              error={errors.street && <span>This field is required!</span>}
             >
               <Controller
                 as={<Input />}
-                id="hotelName"
-                name="hotelName"
-                defaultValue={state.data.hotelName}
+                id="street"
+                name="street"
+                defaultValue={state.data.street}
                 control={control}
-                placeholder="Write your hotel name here"
+                placeholder="Ejemplo: Chaco"
                 rules={{
                   required: true,
                 }}
+                style={{ width: 250 }}
               />
             </FormControl>
-          </Col>
-          <Col sm={12}>
             <FormControl
-              label="Price Per Night (USD)"
-              htmlFor="pricePerNight"
+              label="Numero"
+              htmlFor="number"
+              error={errors.number && <span>This field is required!</span>}
+            >
+              <Controller
+                as={<Input />}
+                id="number"
+                name="number"
+                defaultValue={state.data.number}
+                control={control}
+                placeholder="Ejemplo: 152"
+                rules={{
+                  required: true,
+                }}
+                style={{ width: 250 }}
+              />
+            </FormControl>
+            <FormControl
+              label="Piso"
+              htmlFor="floor"
+              error={errors.floor && <span>This field is required!</span>}
+            >
+              <Controller
+                as={<Input />}
+                id="floor"
+                name="floor"
+                defaultValue={state.data.floor}
+                control={control}
+                placeholder="Ejemplo: 5"
+                rules={{
+                  required: true,
+                }}
+                style={{ width: 250 }}
+              />
+            </FormControl>
+            <FormControl
+              label="Precio"
+              htmlFor="price"
               error={
                 errors.pricePerNight && (
                   <>
@@ -96,60 +179,130 @@ const BasicInformation = ({ setStep }) => {
             >
               <Controller
                 as={<InputNumber />}
-                id="pricePerNight"
-                name="pricePerNight"
-                defaultValue={state.data.pricePerNight}
+                id="price"
+                name="price"
+                defaultValue={state.data.price}
                 control={control}
                 placeholder="00.00"
                 rules={{
                   required: true,
                   pattern: /^[0-9]*$/,
                 }}
+                style={{ width: 250 }}
               />
             </FormControl>
           </Col>
         </Row>
+        <h2>Caracteristicas</h2>
+        <Row gutter={30}>
+          <Col sm={12}>
+          <FormControl
+              label="Ambientes"
+              error={errors.guest && <span>This field is required!</span>}
+            >
+              <InputIncDec
+                name="guest"
+                value={quantity.guest}
+                onChange={handleOnChange('guest')}
+                increment={() => handleIncrement('guest')}
+                decrement={() => handleDecrement('guest')}
+              />
+            </FormControl>
+            <FormControl
+              label="Cuartos"
+              error={errors.guest && <span>This field is required!</span>}
+            >
+              <InputIncDec
+                name="guest"
+                value={quantity.guest}
+                onChange={handleOnChange('guest')}
+                increment={() => handleIncrement('guest')}
+                decrement={() => handleDecrement('guest')}
+              />
+            </FormControl>
+            <FormControl
+              label="Baños"
+              error={errors.guest && <span>This field is required!</span>}
+            >
+              <InputIncDec
+                name="guest"
+                value={quantity.guest}
+                onChange={handleOnChange('guest')}
+                increment={() => handleIncrement('guest')}
+                decrement={() => handleDecrement('guest')}
+              />
+            </FormControl>
+          </Col>
+          <Col sm={12}>
+            <FormControl
+              label="Living"
+              error={errors.guest && <span>This field is required!</span>}
+            >
+              <InputIncDec
+                name="guest"
+                value={quantity.guest}
+                onChange={handleOnChange('guest')}
+                increment={() => handleIncrement('guest')}
+                decrement={() => handleDecrement('guest')}
+              />
+            </FormControl>
+            <FormControl
+              label="Cocina"
+              error={errors.guest && <span>This field is required!</span>}
+            >
+              <InputIncDec
+                name="guest"
+                value={quantity.guest}
+                onChange={handleOnChange('guest')}
+                increment={() => handleIncrement('guest')}
+                decrement={() => handleDecrement('guest')}
+              />
+            </FormControl>
+            <FormControl
+              label="Area"
+              error={errors.guest && <span>This field is required!</span>}
+            >
+              <InputIncDec
+                name="guest"
+                value={quantity.guest}
+                onChange={handleOnChange('guest')}
+                increment={() => handleIncrement('guest')}
+                decrement={() => handleDecrement('guest')}
+              />
+            </FormControl>
+          </Col>
+        </Row>
+        <h2>Amenities</h2>
+        <Row gutter={30}>
+          <Col sm={12}>
+            <Checkbox onChange={onChange}>Mascotas</Checkbox>
+            <Checkbox onChange={onChange}>Pileta</Checkbox>
+            <Checkbox onChange={onChange}>Niños</Checkbox>
+            <Checkbox onChange={onChange}>Laundry</Checkbox>
+            <Checkbox onChange={onChange}>BBQ</Checkbox>
+            <Checkbox onChange={onChange}>Balcon</Checkbox>
+            <Checkbox onChange={onChange}>Portero</Checkbox>
+            <Checkbox onChange={onChange}>GYM</Checkbox>
+            <Checkbox onChange={onChange}>Parqueadero</Checkbox>
+          </Col>
+        </Row>
         <FormControl
-          label="Hotel Description"
-          htmlFor="hotelDescription"
+          label="Descripcion de la propiedad"
+          htmlFor="description"
           error={
             errors.hotelDescription && <span>This field is required!</span>
           }
         >
           <Controller
             as={<Input.TextArea rows={5} />}
-            id="hotelDescription"
-            name="hotelDescription"
-            defaultValue={state.data.hotelDescription}
+            id="description"
+            name="description"
+            defaultValue={state.data.description}
             control={control}
-            placeholder="Tell people about your hotel, room, location & amenities"
+            placeholder="Cuentanos un poco sobre tu propiedad"
             rules={{
               required: true,
             }}
-          />
-        </FormControl>
-        <FormControl
-          label="How many guests can your hotel accommodate?"
-          error={errors.guest && <span>This field is required!</span>}
-        >
-          <InputIncDec
-            name="guest"
-            value={quantity.guest}
-            onChange={handleOnChange('guest')}
-            increment={() => handleIncrement('guest')}
-            decrement={() => handleDecrement('guest')}
-          />
-        </FormControl>
-        <FormControl
-          label="How many beds can guests use?"
-          error={errors.bed && <span>This field is required!</span>}
-        >
-          <InputIncDec
-            name="bed"
-            value={quantity.bed}
-            onChange={handleOnChange('bed')}
-            increment={() => handleIncrement('bed')}
-            decrement={() => handleDecrement('bed')}
           />
         </FormControl>
       </FormContent>
