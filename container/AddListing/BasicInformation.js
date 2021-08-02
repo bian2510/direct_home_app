@@ -13,17 +13,26 @@ const BasicInformation = ({ setStep }) => {
   const { action, state } = useStateMachine(AddListingAction);
   const { control, register, errors, setValue, handleSubmit } = useForm();
   const [quantity, setQuantity] = useState({
-    guest: 0,
-    bed: 0,
+    spaces: 0,
+    rooms: 0,
+    bathrooms: 0,
+    living: 0,
+    kitchens: 0,
+    size: 0
   });
   const operations = ['Alquiler', 'Alquiler temporal', 'Vender']
+  const properties = ['Casa', 'Departamento', 'PH', 'Habitacion', 'Local', 'Parking']
   useEffect(() => {
-    register({ name: 'guest' }, { required: true });
-    register({ name: 'bed' }, { required: true });
+    register({ name: 'locality' }, { required: true });
+    register({ name: 'operation' }, { required: true });
+    register({ name: 'property' }, { required: true });
+    register({ name: 'area' }, { required: true });
+    register({ name: 'price' }, { required: true });
   }, [register]);
   
-  const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
+  const handleSelectChange = (key) => (value) => {
+    debugger
+    setValue([key], value);
   }
   const handleOnChange = (key) => (event) => {
     setQuantity({
@@ -86,11 +95,12 @@ const BasicInformation = ({ setStep }) => {
           <FormControl
             label="Localidad"
             htmlFor="locality"
+            name="locality"
             error={errors.locality && <span>This field is required!</span>}
             >
-            <Select defaultValue="Seleccione" style={{ width: 250 }}>
+            <Select defaultValue="Seleccione" style={{ width: 250 }} onChange={handleSelectChange('locality')}>
             { cabaLocations.map(location => {
-              return <Option value={location}>{location}</Option>
+              return <Option value={location} key={location}>{location}</Option>
             })}
             </Select>
           </FormControl>
@@ -99,9 +109,21 @@ const BasicInformation = ({ setStep }) => {
             htmlFor="operation"
             error={errors.operation && <span>This field is required!</span>}
             >
-            <Select defaultValue="Seleccione" style={{ width: 250 }}>
+            <Select defaultValue="Seleccione" style={{ width: 250 }} onChange={handleSelectChange('operation')}>
             { operations.map(operation => {
-              return <Option value={operation}>{operation}</Option>
+              return <Option value={operation} key={operation}>{operation}</Option>
+            })}
+            </Select>
+          </FormControl>
+          <FormControl
+            label="Tipo de propiedad"
+            htmlFor="property"
+            name="province"
+            error={errors.property && <span>This field is required!</span>}
+            >
+            <Select defaultValue="Seleccione" style={{ width: 250 }} onChange={handleSelectChange('property')}>
+            { properties.map(property => {
+              return <Option value={property} key={property}>{property}</Option>
             })}
             </Select>
           </FormControl>
@@ -178,7 +200,7 @@ const BasicInformation = ({ setStep }) => {
               }
             >
               <Controller
-                as={<InputNumber />}
+                as={<Input />}
                 id="price"
                 name="price"
                 defaultValue={state.data.price}
@@ -198,92 +220,83 @@ const BasicInformation = ({ setStep }) => {
           <Col sm={12}>
           <FormControl
               label="Ambientes"
-              error={errors.guest && <span>This field is required!</span>}
+              error={errors.spaces && <span>This field is required!</span>}
             >
               <InputIncDec
-                name="guest"
-                value={quantity.guest}
-                onChange={handleOnChange('guest')}
-                increment={() => handleIncrement('guest')}
-                decrement={() => handleDecrement('guest')}
+                name="spaces"
+                value={quantity.spaces}
+                onChange={handleOnChange('spaces')}
+                increment={() => handleIncrement('spaces')}
+                decrement={() => handleDecrement('spaces')}
               />
             </FormControl>
             <FormControl
               label="Cuartos"
-              error={errors.guest && <span>This field is required!</span>}
+              error={errors.rooms && <span>This field is required!</span>}
             >
               <InputIncDec
-                name="guest"
-                value={quantity.guest}
-                onChange={handleOnChange('guest')}
-                increment={() => handleIncrement('guest')}
-                decrement={() => handleDecrement('guest')}
+                name="rooms"
+                value={quantity.rooms}
+                onChange={handleOnChange('rooms')}
+                increment={() => handleIncrement('rooms')}
+                decrement={() => handleDecrement('rooms')}
               />
             </FormControl>
             <FormControl
               label="Baños"
-              error={errors.guest && <span>This field is required!</span>}
+              error={errors.bathrooms && <span>This field is required!</span>}
             >
               <InputIncDec
-                name="guest"
-                value={quantity.guest}
-                onChange={handleOnChange('guest')}
-                increment={() => handleIncrement('guest')}
-                decrement={() => handleDecrement('guest')}
+                name="bathrooms"
+                value={quantity.bathrooms}
+                onChange={handleOnChange('bathrooms')}
+                increment={() => handleIncrement('bathrooms')}
+                decrement={() => handleDecrement('bathrooms')}
               />
             </FormControl>
           </Col>
           <Col sm={12}>
             <FormControl
               label="Living"
-              error={errors.guest && <span>This field is required!</span>}
+              error={errors.living && <span>This field is required!</span>}
             >
               <InputIncDec
-                name="guest"
-                value={quantity.guest}
-                onChange={handleOnChange('guest')}
-                increment={() => handleIncrement('guest')}
-                decrement={() => handleDecrement('guest')}
+                name="living"
+                value={quantity.living}
+                onChange={handleOnChange('living')}
+                increment={() => handleIncrement('living')}
+                decrement={() => handleDecrement('living')}
               />
             </FormControl>
             <FormControl
               label="Cocina"
-              error={errors.guest && <span>This field is required!</span>}
+              error={errors.kitchens && <span>This field is required!</span>}
             >
               <InputIncDec
-                name="guest"
-                value={quantity.guest}
-                onChange={handleOnChange('guest')}
-                increment={() => handleIncrement('guest')}
-                decrement={() => handleDecrement('guest')}
+                name="kitchens"
+                value={quantity.kitchens}
+                onChange={handleOnChange('kitchens')}
+                increment={() => handleIncrement('kitchens')}
+                decrement={() => handleDecrement('kitchens')}
               />
             </FormControl>
             <FormControl
-              label="Area"
-              error={errors.guest && <span>This field is required!</span>}
+              label="Area (Mt)"
+              error={errors.size && <span>This field is required!</span>}
             >
-              <InputIncDec
-                name="guest"
-                value={quantity.guest}
-                onChange={handleOnChange('guest')}
-                increment={() => handleIncrement('guest')}
-                decrement={() => handleDecrement('guest')}
+            <Controller
+                as={<Input />}
+                id="size"
+                name="size"
+                defaultValue={state.data.size}
+                control={control}
+                placeholder="Ejemplo: 52"
+                rules={{
+                  required: true,
+                }}
+                style={{ width: 250 }}
               />
             </FormControl>
-          </Col>
-        </Row>
-        <h2>Amenities</h2>
-        <Row gutter={30}>
-          <Col sm={12}>
-            <Checkbox onChange={onChange}>Mascotas</Checkbox>
-            <Checkbox onChange={onChange}>Pileta</Checkbox>
-            <Checkbox onChange={onChange}>Niños</Checkbox>
-            <Checkbox onChange={onChange}>Laundry</Checkbox>
-            <Checkbox onChange={onChange}>BBQ</Checkbox>
-            <Checkbox onChange={onChange}>Balcon</Checkbox>
-            <Checkbox onChange={onChange}>Portero</Checkbox>
-            <Checkbox onChange={onChange}>GYM</Checkbox>
-            <Checkbox onChange={onChange}>Parqueadero</Checkbox>
           </Col>
         </Row>
         <FormControl

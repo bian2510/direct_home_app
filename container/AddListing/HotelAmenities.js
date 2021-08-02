@@ -41,7 +41,7 @@ const HotelAmenities = ({ setStep }) => {
         </FormHeader>
         <Row gutter={30}>
           {hotelAmenities.map((item) => (
-            <Col key={`hotel-amenities--key${item.id}`} md={8}>
+            <Col sm={12} key={`hotel-amenities--key${item.id}`} md={8}>
               <FormControl label={item.label} labelTag="h3">
                 <Controller
                   as={<Radio.Group />}
