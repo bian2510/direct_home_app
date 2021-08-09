@@ -18,7 +18,7 @@ const HotelLocation = ({ setStep }) => {
   const { action, state } = useStateMachine(AddListingAction);
 
   useEffect(() => {
-    register({ name: 'locationData' }, { required: true });
+    register({ name: 'propertyTitle' }, { required: true });
   }, [register]);
 
   const onSubmit = (data) => {
@@ -35,15 +35,15 @@ const HotelLocation = ({ setStep }) => {
         <Row gutter={30}>
           <Col sm={12}>
             <FormControl
-              label="Contact number"
-              htmlFor="contactNumber"
+              label="Titulo para su propiedad"
+              htmlFor="propertyTitle"
               error={
-                errors.contactNumber && (
+                errors.propertyTitle && (
                   <>
-                    {errors.contactNumber?.type === 'required' && (
+                    {errors.propertyTitle?.type === 'required' && (
                       <span>This field is required!</span>
                     )}
-                    {errors.contactNumber?.type === 'pattern' && (
+                    {errors.propertyTitle?.type === 'pattern' && (
                       <span>Please enter your valid number!</span>
                     )}
                   </>
@@ -52,33 +52,32 @@ const HotelLocation = ({ setStep }) => {
             >
               <Controller
                 as={<Input />}
-                id="contactNumber"
-                name="contactNumber"
-                defaultValue={state.data.contactNumber}
+                id="propertyTitle"
+                name="propertyTitle"
+                defaultValue={state.data.propertyTitle}
                 control={control}
-                placeholder="Phone"
+                placeholder="Monoambiente muy luminoso"
                 rules={{
                   required: true,
-                  pattern: /^[0-9]*$/,
                 }}
               />
             </FormControl>
           </Col>
         </Row>
         <FormControl
-          label="Details description"
-          htmlFor="locationDescription"
+          label="Descripcion de la propiedad"
+          htmlFor="propertyDescription"
           error={
-            errors.locationDescription && <span>This field is required!</span>
+            errors.propertyDescription && <span>This field is required!</span>
           }
         >
           <Controller
             as={<Input.TextArea rows={5} />}
-            id="locationDescription"
-            name="locationDescription"
-            defaultValue={state.data.locationDescription}
+            id="propertyDescription"
+            name="propertyDescription"
+            defaultValue={state.data.propertyDescription}
             control={control}
-            placeholder="Write your hotel direction in details , it may help traveler to find your hotel easily"
+            placeholder="Escriba una descripcion detallada de su propiedad"
             rules={{
               required: true,
             }}

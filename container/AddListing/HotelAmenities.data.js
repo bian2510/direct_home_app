@@ -1,17 +1,17 @@
 export const hotelAmenities = [
   {
     id: 1,
-    label: 'Wi-fi Availability',
-    name: 'wifiAvailability',
+    label: 'Wifi',
+    name: 'wifi',
     options: [
-      { label: 'Free', value: 'free' },
-      { label: 'Paid', value: 'paid' },
+      { label: 'Si', value: true },
+      { label: 'No', value: false },
     ],
   },
   {
     id: 2,
-    label: 'Parking Availability',
-    name: 'parking',
+    label: 'Mascotas',
+    name: 'pets',
     options: [
       { label: 'Yes', value: 'yes' },
       { label: 'No', value: 'no' },
@@ -19,7 +19,7 @@ export const hotelAmenities = [
   },
   {
     id: 3,
-    label: 'Pool Availability',
+    label: 'Pileta',
     name: 'pool',
     options: [
       { label: 'Yes', value: 'yes' },
@@ -28,8 +28,8 @@ export const hotelAmenities = [
   },
   {
     id: 4,
-    label: 'Air-Conditioner',
-    name: 'airCondition',
+    label: 'Niños',
+    name: 'children',
     options: [
       { label: 'Yes', value: 'yes' },
       { label: 'No', value: 'no' },
@@ -37,8 +37,53 @@ export const hotelAmenities = [
   },
   {
     id: 5,
-    label: 'Extra Bed Availability',
-    name: 'extraBed',
+    label: 'Laundry',
+    name: 'laundry',
+    options: [
+      { label: 'Yes', value: 'yes' },
+      { label: 'No', value: 'no' },
+    ],
+  },
+  {
+    id: 5,
+    label: 'BBQ',
+    name: 'bbq',
+    options: [
+      { label: 'Yes', value: 'yes' },
+      { label: 'No', value: 'no' },
+    ],
+  },
+  {
+    id: 5,
+    label: ' Balcon',
+    name: 'balcony',
+    options: [
+      { label: 'Yes', value: 'yes' },
+      { label: 'No', value: 'no' },
+    ],
+  },
+  {
+    id: 5,
+    label: 'Portero',
+    name: 'porter',
+    options: [
+      { label: 'Yes', value: 'yes' },
+      { label: 'No', value: 'no' },
+    ],
+  },
+  {
+    id: 5,
+    label: 'GYM',
+    name: 'gym',
+    options: [
+      { label: 'Yes', value: 'yes' },
+      { label: 'No', value: 'no' },
+    ],
+  },
+  {
+    id: 5,
+    label: 'Parqueadero',
+    name: 'parking',
     options: [
       { label: 'Yes', value: 'yes' },
       { label: 'No', value: 'no' },
