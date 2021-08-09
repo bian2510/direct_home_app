@@ -1,33 +1,40 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { saveToken } from '../redux/actions'
 
 export const AuthContext = React.createContext();
 
-const fakeUserData = {
-  id: 1,
-  name: 'Jhon Doe',
-  avatar:
-    'http://s3.amazonaws.com/redqteam.com/isomorphic-reloaded-image/profilepic.png',
-  roles: ['USER', 'ADMIN'],
-};
-
 const AuthProvider = (props) => {
+  const dispatch = useDispatch()
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState({});
 
-  const signIn = (params) => {
-    console.log(params, 'sign in form Props'); 
-        setUser(fakeUserData);
-        setLoggedIn(true);
-        Router.push(`/`);
+  const signIn = async (params, setError) => {
+    const { email, password } = params
+    try {
+      const res = await axios.post('http://localhost:4000/api/users/signin', {
+        email,
+        password
+      })
+      const token = res.headers.authorization
+      dispatch(saveToken(token))
+      const { data } = res
+      setUser(data.user)
+      setLoggedIn(true);
+      Router.push(`/`);
+      
+    } catch (error) {
+      setError(error.response.data.error)
+    }
   };
 
-  const signUp = async (params, setErrorObject) => {
+  const signUp = async (params, setErrorObject, errorObject) => {
     const { username, lastName, email, phone, password, document, documentType } = params
 
     try {
-      const response = await axios.post('http://localhost:4000/api/users/signup', {
+      const res = await axios.post('http://localhost:4000/api/users/signup', {
         user: {
           name: username,
           last_name: lastName,
@@ -39,12 +46,18 @@ const AuthProvider = (props) => {
           type: 'client'
         },
       })
-      const { data } = response
-      setUser(data.user);
+      const token = res.headers.authorization
+      dispatch(saveToken(token))
+      const { data } = res
+      setUser(data.user); 
       setLoggedIn(true);
       Router.push(`/`);
     } catch (err) {
-      setErrorObject(err.response.data.error)
+      if(err.response.status === 500) {
+        setErrorObject({...errorObject, phone: err.response.data.error})
+      }else if (err.response.status === 400) {
+        setErrorObject({...errorObject, email: err.response.data.error.email})
+      }
     }
   };
 

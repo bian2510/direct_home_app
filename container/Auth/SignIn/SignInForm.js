@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Link from 'next/link';
 import { useForm, Controller } from 'react-hook-form';
 import { MdLockOpen } from 'react-icons/md';
@@ -9,10 +9,11 @@ import { FORGET_PASSWORD_PAGE } from 'settings/constant';
 import { FieldWrapper, SwitchWrapper, Label } from '../Auth.style';
 
 const SignInForm = () => {
+  const [ error, setError ] = useState('')
   const { signIn } = useContext(AuthContext);
   const { control, errors, handleSubmit } = useForm();
   const onSubmit = (data) => {
-    signIn(data);
+    signIn(data, setError);
   };
 
   return (
@@ -45,6 +46,9 @@ const SignInForm = () => {
             pattern: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
           }}
         />
+        {
+          error ? <span style={{color: '#F9503D'}}>Invalid email and/or password</span> : ''
+        }
       </FormControl>
       <FormControl
         label="Password"
@@ -56,7 +60,7 @@ const SignInForm = () => {
                 <span>This field is required!</span>
               )}
               {errors.password?.type === 'minLength' && (
-                <span>Password must be at lest 6 characters!</span>
+                <span>Password must be at lest 8 characters!</span>
               )}
               {errors.password?.type === 'maxLength' && (
                 <span>Password must not be longer than 20 characters!</span>
@@ -71,7 +75,7 @@ const SignInForm = () => {
           control={control}
           id="password"
           name="password"
-          rules={{ required: true, minLength: 6, maxLength: 20 }}
+          rules={{ required: true, minLength: 8, maxLength: 20 }}
         />
       </FormControl>
       <FieldWrapper>

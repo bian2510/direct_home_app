@@ -10,21 +10,25 @@ import Layout from 'container/Layout/Layout';
 import AuthProvider from 'context/AuthProvider';
 import { SearchProvider } from 'context/SearchProvider';
 import 'antd/dist/antd.css';
+import { Provider } from 'react-redux'
+import store from '../redux/store';
 
 function App({ Component, router, pageProps }) {
   const { query } = router;
 
   return (
-    <AuthProvider>
-      <SearchProvider query={query}>
-        <ThemeProvider theme={theme}>
-          <Layout>
-            <GlobalStyles />
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
-      </SearchProvider>
-    </AuthProvider>
+    <Provider store={store}>
+      <AuthProvider>
+        <SearchProvider query={query}>
+          <ThemeProvider theme={theme}>
+            <Layout>
+              <GlobalStyles />
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </SearchProvider>
+      </AuthProvider>
+    </Provider>
   );
 }
 
