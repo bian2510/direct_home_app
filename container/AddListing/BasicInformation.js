@@ -22,16 +22,19 @@ const BasicInformation = ({ setStep }) => {
   });
   const operations = ['Alquiler', 'Alquiler temporal', 'Vender']
   const properties = ['Casa', 'Departamento', 'PH', 'Habitacion', 'Local', 'Parking']
-  useEffect(() => {
-    register({ name: 'locality' }, { required: true });
-    register({ name: 'operation' }, { required: true });
-    register({ name: 'property' }, { required: true });
-    register({ name: 'area' }, { required: true });
-    register({ name: 'price' }, { required: true });
-  }, [register]);
+  //useEffect(() => {
+  //  register({ name: 'locality' }, { required: true });
+  //  register({ name: 'operation' }, { required: true });
+  //  register({ name: 'property' }, { required: true });
+  //  register({ name: 'area' }, { required: true });
+  //  register({ name: 'price' }, { required: true });
+  //  register({ name: 'street' }, { required: true });
+  //  register({ name: 'floor' }, { required: true });
+  //  register({ name: 'size' }, { required: true });
+  //  register({ name: 'number' }, { required: true });
+  //}, [register]);
   
-  const handleSelectChange = (key) => (value) => {
-    debugger
+  const handleChange = (key) => (value) => {
     setValue([key], value);
   }
   const handleOnChange = (key) => (event) => {
@@ -98,7 +101,7 @@ const BasicInformation = ({ setStep }) => {
             name="locality"
             error={errors.locality && <span>This field is required!</span>}
             >
-            <Select defaultValue="Seleccione" style={{ width: 250 }} onChange={handleSelectChange('locality')}>
+            <Select defaultValue="Seleccione" style={{ width: 250 }} onChange={handleChange('locality')}>
             { cabaLocations.map(location => {
               return <Option value={location} key={location}>{location}</Option>
             })}
@@ -109,7 +112,7 @@ const BasicInformation = ({ setStep }) => {
             htmlFor="operation"
             error={errors.operation && <span>This field is required!</span>}
             >
-            <Select defaultValue="Seleccione" style={{ width: 250 }} onChange={handleSelectChange('operation')}>
+            <Select defaultValue="Seleccione" style={{ width: 250 }} onChange={handleChange('operation')}>
             { operations.map(operation => {
               return <Option value={operation} key={operation}>{operation}</Option>
             })}
@@ -121,7 +124,7 @@ const BasicInformation = ({ setStep }) => {
             name="province"
             error={errors.property && <span>This field is required!</span>}
             >
-            <Select defaultValue="Seleccione" style={{ width: 250 }} onChange={handleSelectChange('property')}>
+            <Select defaultValue="Seleccione" style={{ width: 250 }} onChange={handleChange('property')}>
             { properties.map(property => {
               return <Option value={property} key={property}>{property}</Option>
             })}
@@ -299,25 +302,6 @@ const BasicInformation = ({ setStep }) => {
             </FormControl>
           </Col>
         </Row>
-        <FormControl
-          label="Descripcion de la propiedad"
-          htmlFor="description"
-          error={
-            errors.hotelDescription && <span>This field is required!</span>
-          }
-        >
-          <Controller
-            as={<Input.TextArea rows={5} />}
-            id="description"
-            name="description"
-            defaultValue={state.data.description}
-            control={control}
-            placeholder="Cuentanos un poco sobre tu propiedad"
-            rules={{
-              required: true,
-            }}
-          />
-        </FormControl>
       </FormContent>
       <FormAction>
         <div className="inner-wrapper">
